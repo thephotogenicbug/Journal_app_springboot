@@ -26,7 +26,7 @@ public class JournalEntryControllerV2 {
     private UserService userService;
 
     @GetMapping("{userName}")
-    public ResponseEntity<?> getAllJournalEntriesOfUser(@PathVariable String userName){ // localhost:8080/journal GET
+    public ResponseEntity<?> getAllJournalEntriesOfUser(@PathVariable String userName){ // localhost:8080/journal/username GET
         User user = userService.findByUserName(userName);
         List<JournalEntry> all = user.getJournalEntries();
         if(all != null && !all.isEmpty()){
@@ -59,13 +59,13 @@ public class JournalEntryControllerV2 {
     }
 
     @DeleteMapping("id/{userName}/{myId}")
-    public ResponseEntity<?> deleteJournalEntryById(@PathVariable ObjectId myId, @PathVariable String userName){ // localhost:8080/journal/id/myid DELETE BY ID
+    public ResponseEntity<?> deleteJournalEntryById(@PathVariable ObjectId myId, @PathVariable String userName){ // localhost:8080/journal/id/username/myid DELETE BY ID
          journalEntryService.deleteById(myId, userName);
          return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     @PutMapping("/id/{userName}/{id}")
-    public ResponseEntity<?> updateJournalById(@PathVariable ObjectId id, @RequestBody JournalEntry newEntry, @PathVariable String userName){ // localhost:8080/journal/id/myid EDIT BY ID
+    public ResponseEntity<?> updateJournalById(@PathVariable ObjectId id, @RequestBody JournalEntry newEntry, @PathVariable String userName){ // localhost:8080/journal/id/username/myid EDIT BY ID
         JournalEntry old = journalEntryService.findById(id).orElse(null);
         if(old != null){
            old.setTitle(newEntry.getTitle() != null && !newEntry.getTitle().equals("") ? newEntry.getTitle() : old.getTitle());
